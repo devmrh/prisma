@@ -33,6 +33,27 @@ input PostWhereUniqueInput {
   id: Int
 }
 
+type Profile {
+  bio: String!
+  id: Int!
+  userId: Int
+  website: String!
+}
+
+input ProfileCreateManyWithoutUserInput {
+  connect: [ProfileWhereUniqueInput!]
+  create: [ProfileCreateWithoutUserInput!]
+}
+
+input ProfileCreateWithoutUserInput {
+  bio: String!
+  website: String!
+}
+
+input ProfileWhereUniqueInput {
+  id: Int
+}
+
 type Query {
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
@@ -50,4 +71,5 @@ input UserCreateInput {
   email: String!
   name: String
   posts: PostCreateManyWithoutAuthorInput
+  Profile: ProfileCreateManyWithoutUserInput
 }

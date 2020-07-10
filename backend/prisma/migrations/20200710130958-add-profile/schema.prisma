@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:prisma@localhost:3306/prisma"
+  url = "***"
 }
 
 model User {
@@ -27,8 +27,6 @@ model Post {
 model Profile {
   id Int @default(autoincrement()) @id
   userId Int?
-  bio String
-  website String
   user User?  @relation(fields: [userId], references: [id])
 }
 

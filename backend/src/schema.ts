@@ -25,6 +25,18 @@ const Post = objectType({
   },
 })
 
+const Profile = objectType({
+  name: 'Profile',
+  definition(t) {
+    t.model.id()
+    t.model.userId()
+    t.model.website()
+    t.model.bio()
+  },
+})
+
+
+
 const Query = objectType({
   name: 'Query',
   definition(t) {
@@ -38,6 +50,14 @@ const Query = objectType({
         })
       },
     })
+
+    // t.list.field('profile', {
+    //   type: 'Profile',
+    //   resolve: (_, args, ctx) => {
+    //     return ctx.prisma.profile.findMany({
+    //     })
+    //   },
+    // })
 
     t.list.field('filterPosts', {
       type: 'Post',
@@ -102,7 +122,7 @@ const Mutation = objectType({
 })
 
 export const schema = makeSchema({
-  types: [Query, Mutation, Post, User],
+  types: [Query, Mutation, Post, User, Profile],
   plugins: [nexusPrismaPlugin()],
   outputs: {
     schema: __dirname + '/../schema.graphql',
