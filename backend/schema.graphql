@@ -4,9 +4,12 @@
 
 type Mutation {
   createDraft(authorEmail: String, content: String, title: String!): Post!
+  createProfile(authorEmail: String, bio: String, website: String): Profile!
   deleteOnePost(where: PostWhereUniqueInput!): Post
+  deleteProfile(id: Int): Profile!
   publish(id: Int): Post
   signupUser(data: UserCreateInput!): User!
+  updateProfile(bio: String, id: Int, website: String): Profile!
 }
 
 type Post {
@@ -36,8 +39,9 @@ input PostWhereUniqueInput {
 type Profile {
   bio: String!
   id: Int!
+  user: User
   userId: Int
-  website: String!
+  website: String
 }
 
 input ProfileCreateManyWithoutUserInput {
@@ -47,7 +51,7 @@ input ProfileCreateManyWithoutUserInput {
 
 input ProfileCreateWithoutUserInput {
   bio: String!
-  website: String!
+  website: String
 }
 
 input ProfileWhereUniqueInput {
@@ -58,6 +62,7 @@ type Query {
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
   post(where: PostWhereUniqueInput!): Post
+  profile: [Profile!]!
 }
 
 type User {

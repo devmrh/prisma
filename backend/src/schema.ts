@@ -30,6 +30,7 @@ const Profile = objectType({
   definition(t) {
     t.model.id()
     t.model.userId()
+    t.model.user()
     t.model.website()
     t.model.bio()
   },
@@ -51,13 +52,13 @@ const Query = objectType({
       },
     })
 
-    // t.list.field('profile', {
-    //   type: 'Profile',
-    //   resolve: (_, args, ctx) => {
-    //     return ctx.prisma.profile.findMany({
-    //     })
-    //   },
-    // })
+    t.list.field('profile', {
+      type: 'Profile',
+      resolve: (_, args, ctx) => {
+        return ctx.prisma.profile.findMany({
+        })
+      },
+    })
 
     t.list.field('filterPosts', {
       type: 'Post',
@@ -104,6 +105,77 @@ const Mutation = objectType({
         })
       },
     })
+    // t.field('createProfile', {
+    //   type: 'Profile',
+    //   args: {
+    //     bio: stringArg({ nullable: false }),
+    //     website: stringArg(),
+    //     authorEmail: stringArg(),
+    //   },
+    //   resolve: (_, { bio, website, authorEmail }, ctx) => {
+    //     return ctx.prisma.profile.create({
+    //       data: {
+    //         bio,
+    //         website,
+    //         user: {
+    //           connect: { email: authorEmail },
+    //         },
+    //       },
+    //     })
+    //   },
+    // })
+
+    t.field('createProfile', {
+      type: 'Profile',
+      args: {
+        bio: stringArg(),
+        website: stringArg(),
+        authorEmail: stringArg(),
+
+      },
+      resolve: (_, { bio, website,authorEmail }, ctx) => {
+        return ctx.prisma.profile.create({
+          data: {
+            bio,
+            website,
+            user: {
+              connect: {email: authorEmail},
+            }
+          }
+        })
+      }
+    });
+
+    t.field('deleteProfile', {
+      type: 'Profile',
+      args: {
+        id: intArg(),
+      },
+      resolve: (_, {id}, ctx) => {
+        return ctx.prisma.profile.delete({
+          where: {id: Number(id)}
+        })
+      }
+    })
+
+    t.field('updateProfile', {
+      type: 'Profile',
+      args: {
+        id: intArg(),
+        bio: stringArg({ nullable: true }),
+        website: stringArg({ nullable: true })
+      },
+      resolve: (_, { id, bio, website }, ctx) => {
+        return ctx.prisma.profile.update({
+          where: { id },
+          data: {
+            bio,
+            website
+          }
+
+        })
+      }
+    });
 
     t.field('publish', {
       type: 'Post',
