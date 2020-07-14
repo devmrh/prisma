@@ -1,0 +1,5 @@
+fragment ProfileFragment on Profile {
+  id
+  bio
+  website
+}

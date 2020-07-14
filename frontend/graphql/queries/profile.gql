@@ -1,0 +1,9 @@
+
+
+  #import from '../fragments/profile.gql'
+
+query profileQuery {
+  profile {
+    ...ProfileFragment
+  }
+}
