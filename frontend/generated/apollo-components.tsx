@@ -19,12 +19,18 @@ export type Query = {
   post?: Maybe<Post>;
   feed: Array<Post>;
   profile: Array<Profile>;
+  getProfile: Profile;
   filterPosts: Array<Post>;
 };
 
 
 export type QueryPostArgs = {
   where: PostWhereUniqueInput;
+};
+
+
+export type QueryGetProfileArgs = {
+  id?: Maybe<Scalars['Int']>;
 };
 
 
@@ -36,6 +42,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   signupUser: User;
   deleteOnePost?: Maybe<Post>;
+  deleteOneProfile?: Maybe<Profile>;
   createDraft: Post;
   createProfile: Profile;
   deleteProfile: Profile;
@@ -51,6 +58,11 @@ export type MutationSignupUserArgs = {
 
 export type MutationDeleteOnePostArgs = {
   where: PostWhereUniqueInput;
+};
+
+
+export type MutationDeleteOneProfileArgs = {
+  where: ProfileWhereUniqueInput;
 };
 
 
@@ -122,6 +134,10 @@ export type UserCreateInput = {
   Profile?: Maybe<ProfileCreateManyWithoutUserInput>;
 };
 
+export type ProfileWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>;
+};
+
 export type PostCreateManyWithoutAuthorInput = {
   create?: Maybe<Array<PostCreateWithoutAuthorInput>>;
   connect?: Maybe<Array<PostWhereUniqueInput>>;
@@ -141,10 +157,6 @@ export type PostCreateWithoutAuthorInput = {
 export type ProfileCreateWithoutUserInput = {
   bio: Scalars['String'];
   website?: Maybe<Scalars['String']>;
-};
-
-export type ProfileWhereUniqueInput = {
-  id?: Maybe<Scalars['Int']>;
 };
 
 export type PostFragmentFragment = (
@@ -192,6 +204,19 @@ export type CreateProfileMutationMutation = (
   ) }
 );
 
+export type DeleteOneProfileMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteOneProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteOneProfile?: Maybe<(
+    { __typename?: 'Profile' }
+    & ProfileFragmentFragment
+  )> }
+);
+
 export type SignupUserMutationMutationVariables = Exact<{
   name: Scalars['String'];
   email: Scalars['String'];
@@ -203,6 +228,34 @@ export type SignupUserMutationMutation = (
   & { signupUser: (
     { __typename?: 'User' }
     & UserFragmentFragment
+  ) }
+);
+
+export type UpdateProfileMutationVariables = Exact<{
+  id: Scalars['Int'];
+  bio?: Maybe<Scalars['String']>;
+  website?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateProfileMutation = (
+  { __typename?: 'Mutation' }
+  & { updateProfile: (
+    { __typename?: 'Profile' }
+    & ProfileFragmentFragment
+  ) }
+);
+
+export type GetProfileQueryQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetProfileQueryQuery = (
+  { __typename?: 'Query' }
+  & { getProfile: (
+    { __typename?: 'Profile' }
+    & ProfileFragmentFragment
   ) }
 );
 
@@ -272,6 +325,22 @@ export type CreateProfileMutationComponentProps = Omit<ApolloReactComponents.Mut
     
 export type CreateProfileMutationMutationResult = ApolloReactCommon.MutationResult<CreateProfileMutationMutation>;
 export type CreateProfileMutationMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateProfileMutationMutation, CreateProfileMutationMutationVariables>;
+export const DeleteOneProfileDocument = gql`
+    mutation deleteOneProfile($id: Int!) {
+  deleteOneProfile(where: {id: $id}) {
+    ...ProfileFragment
+  }
+}
+    ${ProfileFragmentFragmentDoc}`;
+export type DeleteOneProfileMutationFn = ApolloReactCommon.MutationFunction<DeleteOneProfileMutation, DeleteOneProfileMutationVariables>;
+export type DeleteOneProfileComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<DeleteOneProfileMutation, DeleteOneProfileMutationVariables>, 'mutation'>;
+
+    export const DeleteOneProfileComponent = (props: DeleteOneProfileComponentProps) => (
+      <ApolloReactComponents.Mutation<DeleteOneProfileMutation, DeleteOneProfileMutationVariables> mutation={DeleteOneProfileDocument} {...props} />
+    );
+    
+export type DeleteOneProfileMutationResult = ApolloReactCommon.MutationResult<DeleteOneProfileMutation>;
+export type DeleteOneProfileMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOneProfileMutation, DeleteOneProfileMutationVariables>;
 export const SignupUserMutationDocument = gql`
     mutation signupUserMutation($name: String!, $email: String!) {
   signupUser(data: {name: $name, email: $email}) {
@@ -288,6 +357,36 @@ export type SignupUserMutationComponentProps = Omit<ApolloReactComponents.Mutati
     
 export type SignupUserMutationMutationResult = ApolloReactCommon.MutationResult<SignupUserMutationMutation>;
 export type SignupUserMutationMutationOptions = ApolloReactCommon.BaseMutationOptions<SignupUserMutationMutation, SignupUserMutationMutationVariables>;
+export const UpdateProfileDocument = gql`
+    mutation updateProfile($id: Int!, $bio: String, $website: String) {
+  updateProfile(id: $id, bio: $bio, website: $website) {
+    ...ProfileFragment
+  }
+}
+    ${ProfileFragmentFragmentDoc}`;
+export type UpdateProfileMutationFn = ApolloReactCommon.MutationFunction<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export type UpdateProfileComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<UpdateProfileMutation, UpdateProfileMutationVariables>, 'mutation'>;
+
+    export const UpdateProfileComponent = (props: UpdateProfileComponentProps) => (
+      <ApolloReactComponents.Mutation<UpdateProfileMutation, UpdateProfileMutationVariables> mutation={UpdateProfileDocument} {...props} />
+    );
+    
+export type UpdateProfileMutationResult = ApolloReactCommon.MutationResult<UpdateProfileMutation>;
+export type UpdateProfileMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateProfileMutation, UpdateProfileMutationVariables>;
+export const GetProfileQueryDocument = gql`
+    query getProfileQuery($id: Int!) {
+  getProfile(id: $id) {
+    ...ProfileFragment
+  }
+}
+    ${ProfileFragmentFragmentDoc}`;
+export type GetProfileQueryComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetProfileQueryQuery, GetProfileQueryQueryVariables>, 'query'> & ({ variables: GetProfileQueryQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const GetProfileQueryComponent = (props: GetProfileQueryComponentProps) => (
+      <ApolloReactComponents.Query<GetProfileQueryQuery, GetProfileQueryQueryVariables> query={GetProfileQueryDocument} {...props} />
+    );
+    
+export type GetProfileQueryQueryResult = ApolloReactCommon.QueryResult<GetProfileQueryQuery, GetProfileQueryQueryVariables>;
 export const ProfileQueryDocument = gql`
     query profileQuery {
   profile {

@@ -60,6 +60,18 @@ const Query = objectType({
       },
     })
 
+    t.field('getProfile', {
+      type: 'Profile',
+      args: {
+        id: intArg()
+      },
+      resolve: (_, { id }, ctx) => {
+        return ctx.prisma.profile.findOne({
+          where: { id: Number(id) },
+        })
+      },
+    })
+
     t.list.field('filterPosts', {
       type: 'Post',
       args: {
@@ -84,6 +96,9 @@ const Mutation = objectType({
   definition(t) {
     t.crud.createOneUser({ alias: 'signupUser' })
     t.crud.deleteOnePost()
+    t.crud.deleteOneProfile()
+
+
 
     t.field('createDraft', {
       type: 'Post',

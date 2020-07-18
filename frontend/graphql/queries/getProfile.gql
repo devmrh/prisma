@@ -1,0 +1,9 @@
+#import from '../fragments/Profile.gql'
+
+query getProfileQuery ($id: Int!){
+  getProfile( id: $id){
+    ...ProfileFragment
+  }
+}
+
+

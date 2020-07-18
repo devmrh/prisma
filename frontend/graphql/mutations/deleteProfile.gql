@@ -1,0 +1,8 @@
+#import from '../fragments/Profile.gql'
+
+mutation deleteOneProfile ($id: Int!){
+  deleteOneProfile(where: { id: $id}){
+    ...ProfileFragment
+  }
+}
+

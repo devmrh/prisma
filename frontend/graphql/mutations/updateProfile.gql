@@ -1,0 +1,8 @@
+#import from '../fragments/profile.gql'
+
+mutation updateProfile($id: Int!, $bio: String, $website: String) {
+  updateProfile(id: $id , bio: $bio, website: $website ) {
+    ...ProfileFragment
+
+  }
+}

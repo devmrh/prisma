@@ -3,6 +3,7 @@ import { Row, Col, Button, Form, Input } from "antd";
 import {
   CreateProfileMutationComponent,
   ProfileQueryDocument,
+  
 } from "../generated/apollo-components";
 
 type Props = {};
@@ -23,7 +24,7 @@ class NewProfile extends React.Component<Props> {
 
 
   handleFormSubmit = (values, createProfile) => {
-      console.log("HAHA");
+
     // e.preventDefault();]
       createProfile({
         variables: { bio: values.bio, website: values.website, authorEmail: values.authorEmail },
