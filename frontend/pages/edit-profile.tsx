@@ -71,8 +71,8 @@ const editProfile = () => {
 
 
       return  <Card title="Default size card" extra={<a href="#">More</a>} style={{ width: 300 }}>
-        <p>{data.bio}</p>
-        <p>{data.website}</p>
+        <p>{data.getProfile.bio}</p>
+        <p>{data.getProfile.website}</p>
         </Card>
 
       }}

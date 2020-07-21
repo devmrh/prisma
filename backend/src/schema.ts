@@ -1,5 +1,7 @@
 import { nexusPrismaPlugin } from 'nexus-prisma'
 import { intArg, makeSchema, objectType, stringArg } from '@nexus/schema'
+import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
 
 const User = objectType({
   name: 'User',
@@ -7,6 +9,7 @@ const User = objectType({
     t.model.id()
     t.model.name()
     t.model.email()
+    t.model.password()
     t.model.posts({
       pagination: false,
     })
@@ -97,6 +100,37 @@ const Mutation = objectType({
     t.crud.createOneUser({ alias: 'signupUser' })
     t.crud.deleteOnePost()
     t.crud.deleteOneProfile()
+
+
+    t.field('createUser', {
+      type: 'User',
+      args: {
+        name: stringArg({ nullable: false }),
+        email: stringArg(),
+        password: stringArg(),
+      },
+      resolve: (_, { name, email, password }, ctx) => {
+        const hashedPassword = bcrypt.hashSync(password, 12);
+
+       const user = ctx.prisma.user.create({
+          data: {
+            name,
+            email,
+            password: hashedPassword,
+          },
+        });
+        // const token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
+        //   expiresIn: 36000,
+        // });
+        const userWithToken = {
+          ...user,
+          token: jwt.sign({ user }, "askjklda!La;d5000asd", {expiresIn: 36000})
+        };
+
+        return userWithToken;
+       // return { token };
+      },
+    })
 
 
 
